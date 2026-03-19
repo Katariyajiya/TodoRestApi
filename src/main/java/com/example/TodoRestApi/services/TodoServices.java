@@ -1,8 +1,10 @@
 package com.example.TodoRestApi.services;
 
+import com.example.TodoRestApi.exceptions.ResourceNotFoundException;
 import com.example.TodoRestApi.model.Todo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,7 @@ public class TodoServices {
     Logger logger = LoggerFactory.getLogger(TodoServices.class);
     List<Todo> todos = new ArrayList<>();
     public Todo createTodo(Todo todo){
-        System.out.println("REQUEST REACHED TO SERVICES");
+      //  System.out.println("REQUEST REACHED TO SERVICES");
         todos.add(todo);
         logger.info("Todos {}",this.todos);
         return todo;
@@ -28,7 +30,7 @@ public class TodoServices {
 
     public Todo getTodoById(int id){
       Todo todo = todos.stream().filter(t -> id == t.getId())
-              .findAny().get();
+              .findAny().orElseThrow(() -> new ResourceNotFoundException("Todo npt found with given id", HttpStatus.NOT_FOUND));
       return todo;
     }
 

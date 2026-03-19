@@ -27,10 +27,19 @@ public class TodoController {
 
     @PostMapping
     public ResponseEntity<Todo> createTodo(@RequestBody Todo todo){
+
+        //testing null pointer exception
+        String str = null;
+        str.length();
+
         int id = random.nextInt(99999999);
         todo.setId(id);
+        Date curdate = new Date();
+        logger.info("cuurent date {}",curdate);
       //  System.out.println("REQUEST REACHED TO CONTROLLER");
         logger.info("create todo");
+        logger.info("todo date :",todo.getTodoDate());
+        todo.setAddedDate(curdate);
         Todo todo1 = todoServices.createTodo(todo);
     //    System.out.println("REQUEST REACHED TO CONTROLLER NOW RETURNING");
         return new ResponseEntity<>(todo1, HttpStatus.CREATED);
@@ -58,4 +67,14 @@ public class TodoController {
         System.out.println("Delete request reached to controller");
         todoServices.deleteTodo(todoId);
     }
+
+
+    //E X C E P T I O N     H A N D L E R
+
+//    @ExceptionHandler(NullPointerException.class)
+//    public String nullPointerExceptionHandler(NullPointerException ex){
+//        System.out.println(ex.getMessage());
+//        System.out.println("Null pointer exception generated");
+//        return "Null Pointer Exception Generated "+ex.getMessage();
+//    }
 }
